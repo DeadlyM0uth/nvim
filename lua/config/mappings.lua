@@ -53,11 +53,11 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 
 
 -- tab stuff
-vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>")   --open new tab
-vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>") --close current tab
-vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>")     --go to next
-vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>")     --go to pre
-vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>") --open current tab in new tab
+--vim.keymap.set("n", "<leader>to", "<cmd>tabnew<CR>")   --open new tab
+--vim.keymap.set("n", "<leader>tx", "<cmd>tabclose<CR>") --close current tab
+--vim.keymap.set("n", "<leader>tn", "<cmd>tabn<CR>")     --go to next
+--vim.keymap.set("n", "<leader>tp", "<cmd>tabp<CR>")     --go to pre
+--vim.keymap.set("n", "<leader>tf", "<cmd>tabnew %<CR>") --open current tab in new tab
 
 --split management
 vim.keymap.set("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
@@ -68,18 +68,16 @@ vim.keymap.set("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" })
 -- close current split window
 vim.keymap.set("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 
+vim.keymap.set('n', '<leader>q', '<Cmd>bd<CR>', { desc = 'Close buffer' })
+vim.keymap.set('n', '<leader>Q', '<Cmd>bd!<CR>', { desc = 'Force close buffer' })
 
--- Go to and tab number
 for i = 1, 9 do
-  vim.keymap.set('n', '<A-'..i..'>', function()
-    local tab_count = vim.fn.tabpagenr('$')
-    if i <= tab_count then
-      vim.cmd('tabnext ' .. i)
-    else
-      print('Tab ' .. i .. ' does not exist. Only ' .. tab_count .. ' tabs open.')
+  vim.keymap.set('n', '<A-'..i..'>', function() 
+    -- Switch to the i-th buffer in the buffer list
+    local bufs = vim.fn.getbufinfo({ buflisted = 1 })
+    if bufs[i] then
+      vim.cmd('buffer ' .. bufs[i].bufnr)
     end
-  end, { desc = 'Go to tab ' .. i })
+  end, { desc = 'Go to buffer ' .. i })
 end
 
--- Alt+0 for last tab
-vim.keymap.set('n', '<A-0>', '<Cmd>tablast<CR>', { desc = 'Go to last tab' })
