@@ -4,7 +4,11 @@ opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
 
-o.wrap = false
+o.wrap = true
+vim.opt.whichwrap:append('h')
+vim.opt.whichwrap:append('l')
+vim.opt.whichwrap:append('<')
+vim.opt.whichwrap:append('>')
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2

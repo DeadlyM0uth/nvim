@@ -34,7 +34,7 @@ map('n', '<A-Down>', function()
 end, { desc = 'Duplicate line below and stay' }
 )
 
-map("n", "<leader>f", vim.lsp.buf.format)
+-- map("n", "<leader>f", vim.lsp.buf.format)
 
 
 map("n", "<leader>s", 

@@ -58,6 +58,55 @@ return {
 
           })
       end
-  }
+  },
+  
+  { 
+    'nvim-mini/mini.pairs',
+    version = false,
+    config = function()
+      require('mini.pairs').setup({})
+    end
+  },
 
+  { 
+    'nvim-mini/mini.surround',
+    version = false,
+    
+    config = function()
+      require("mini.surround").setup({})
+    end
+  },
+  
+  { 
+    'nvim-mini/mini.pick',
+    version = false,
+
+    config = function()
+      require('mini.pick').setup({})
+        
+      -- File operations
+      vim.keymap.set('n', '<leader>ff', "<cmd>lua MiniPick.builtin.files()<CR>", { desc = 'Find files' })
+      vim.keymap.set('n', '<leader>fg', "<cmd>lua MiniPick.builtin.grep_live()<CR>", { desc = 'Grep in files' })
+      
+      -- Buffer operations  
+      vim.keymap.set('n', '<leader>fb', "<cmd>lua MiniPick.builtin.buffers()<CR>", { desc = 'Find buffers' })
+    end
+
+  },
+
+  {
+    'nvim-mini/mini.indentscope', version = false,
+    
+    config = function()
+      require("mini.indentscope").setup({})
+    end
+  },
+
+  { 'nvim-mini/mini.completion', version = false, 
+    config = function()
+      require("mini.completion").setup({})
+    end
+
+    
+  },
 }
