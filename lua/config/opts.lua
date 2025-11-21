@@ -12,7 +12,7 @@ vim.opt.whichwrap:append('>')
 opt.tabstop = 2
 opt.shiftwidth = 2
 opt.softtabstop = 2
-
+vim.opt.updatetime = 250
 
 opt.expandtab = true
 opt.smarttab = true
@@ -22,14 +22,13 @@ opt.swapfile = false
 opt.backup = false
 opt.writebackup = false
 
-opt.scrolloff = 8
+opt.scrolloff = 12
 opt.signcolumn = "yes"
 
-opt.backspace = {"start", "eol", "indent"}
+opt.backspace = { "start", "eol", "indent" }
 
 opt.splitright = true
 opt.splitbelow = true
 
-vim.cmd[[colorscheme catppuccin-latte]]
-opt.backspace = 'indent,eol,start' 
+vim.cmd [[colorscheme catppuccin-mocha]]
 opt.clipboard = 'unnamedplus'
