@@ -1,9 +1,9 @@
 vim.diagnostic.config({
-  virtual_text = true,      -- Отключаем виртуальный текст
+  virtual_text = false,      -- Отключаем виртуальный текст
   signs = true,             -- Включаем знаки на полях
   underline = true,         -- Подчеркивание проблемных мест
   update_in_insert = false, -- Не обновлять в режиме insert
-  severity_sort = true,     -- Сортировка по серьезности
+  severity_sort = true,-- Сортировка по серьезности
 })
 
 -- some diagnostics stuff
@@ -28,6 +28,11 @@ vim.diagnostic.config({
 })
 
 
+vim.keymap.set('n', 'gK', function()
+  local new_config = not vim.diagnostic.config().virtual_lines
+  vim.diagnostic.config({ virtual_lines = new_config })
+end, { desc = 'Toggle diagnostic virtual_lines' })
+
 vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP Code Action' })
 
 function OpenAllDiagnostics()
@@ -39,15 +44,13 @@ function OpenAllDiagnostics()
     return
   end
 
-
-
   vim.ui.select(
     {
-      "Option A",
-      "Option B",
-      "Option C",
+      "Line1",
+      "Line2",
+      "Line3",
     },
-    {prompt = "Choose an option:"},
+    { prompt = "Choose an option:" },
     function(choice, idx)
       if choice then
         print("You selected: " .. choice .. " at index " .. idx)
@@ -59,7 +62,6 @@ function OpenAllDiagnostics()
 end
 
 
-
-
+vim.api.nvim_create_user_command("DisplayAllDiagnostics", OpenAllDiagnostics, {})
 
 
