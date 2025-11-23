@@ -9,9 +9,9 @@ return {
     config = function()
       require('mini.files').setup({
         mappings = {
-          go_in       = '<Right>',         -- Changed from 'l' to right arrow
+          go_in       = '<Right>', -- Changed from 'l' to right arrow
           go_in_plus  = '<S-Right>',
-          go_out      = '<Left>',          -- Changed from 'h' to left arrow
+          go_out      = '<Left>',  -- Changed from 'h' to left arrow
           go_out_plus = '<S-Left>',
 
         },
@@ -113,4 +113,72 @@ return {
 
 
   },
+
+  {
+    'nvim-mini/mini.snippets',
+    version = false,
+
+    config = function()
+      local gen_loader = require('mini.snippets').gen_loader
+      local config_path = vim.fn.stdpath("config")
+
+
+      local lang_patterns = {
+        -- Filetype = { 'pattern1', 'pattern2', ... }
+        -- Web Development
+        javascript = { 'javascript.json', 'javascriptreact.json' },
+        typescript = { 'typescript.json', 'typescriptreact.json' },
+        jsx = { 'javascriptreact.json' },
+        tsx = { 'typescriptreact.json' },
+        vue = { 'vue.json' },
+        svelte = { 'svelte.json' },
+
+        -- Backend
+        python = { 'python.json' },
+        php = { 'php.json' },
+        ruby = { 'ruby.json' },
+
+        -- Mobile
+        swift = { 'swift.json' },
+        kotlin = { 'kotlin.json' },
+        dart = { 'dart.json' },
+
+        -- Systems
+        c = { 'c.json' },
+        cpp = { 'cpp.json' },
+        rust = { 'rust.json' },
+        go = { 'go.json' },
+
+        -- Scripting
+        lua = { 'lua.json' },
+        bash = { 'bash.json', 'sh.json' },
+        zsh = { 'bash.json', 'sh.json' },
+
+        -- Markup & Styles
+        html = { 'html.json' },
+        css = { 'css.json' },
+        scss = { 'scss.json' },
+        json = { 'json.json' },
+        yaml = { 'yaml.json' },
+      }
+
+      require("mini.snippets").setup({
+        mappings = {
+          jump_next = '<C-Right>',
+          jump_prev = '<C-Left>',
+        },
+
+        snippets = {
+          -- Always load 'snippets/global.json' from config directory
+          gen_loader.from_file(config_path .. '/snippets/global.json'),
+          -- Load from 'snippets/' directory of plugins, like 'friendly-snippets'
+          gen_loader.from_lang({ lang_patterns = lang_patterns }),
+        },
+      })
+
+      MiniSnippets.start_lsp_server()
+
+    end
+
+  }
 }

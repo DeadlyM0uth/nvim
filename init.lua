@@ -7,6 +7,8 @@ vim.lsp.enable({
   "luals",
   "pyright",
   "gopls",
-  "typescript-language-server",
+  "ts_ls",
+  "bashls",
+  "html",
 })
 
