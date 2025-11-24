@@ -1,22 +1,24 @@
 vim.diagnostic.config({
-  virtual_text = false,      -- Отключаем виртуальный текст
+  virtual_text = false,     -- Отключаем виртуальный текст
   signs = true,             -- Включаем знаки на полях
   underline = true,         -- Подчеркивание проблемных мест
   update_in_insert = false, -- Не обновлять в режиме insert
-  severity_sort = true,-- Сортировка по серьезности
+  severity_sort = true,     -- Сортировка по серьезности
+  virtual_lines = true,
 })
 
 -- some diagnostics stuff
-local signs = { Error = "", Warn = "", Hint = "", Info = "" }
+Signs = { Error = "", Warn = "", Info = "", Hint = "" }
+
 -- Highlight entire line for errors
 -- Highlight the line number for warnings
 vim.diagnostic.config({
   signs = {
     text = {
-      [vim.diagnostic.severity.ERROR] = signs.Error,
-      [vim.diagnostic.severity.HINT] = signs.Hint,
-      [vim.diagnostic.severity.INFO] = signs.Info,
-      [vim.diagnostic.severity.WARN] = signs.Warn,
+      [vim.diagnostic.severity.ERROR] = Signs.Error,
+      [vim.diagnostic.severity.WARN] = Signs.Warn,
+      [vim.diagnostic.severity.INFO] = Signs.Info,
+      [vim.diagnostic.severity.HINT] = Signs.Hint,
     },
     linehl = {
       [vim.diagnostic.severity.ERROR] = 'ErrorMsg',
@@ -34,35 +36,59 @@ vim.keymap.set('n', 'gK', function()
   vim.diagnostic.config({ virtual_lines = new_config })
 end, { desc = 'Toggle diagnostic virtual_lines' })
 
-vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP Code Action' })
+-- Command to Pick diagnostics of a buffer
+vim.api.nvim_create_user_command(
+  "OpenDiagnostics",
+  function()
+    local buffer = vim.api.nvim_get_current_buf()
+    local diagnostic_arr = vim.diagnostic.get(buffer)
 
-function OpenAllDiagnostics()
-  local buf = vim.api.nvim_get_current_buf()
-  local diagnostics = vim.diagnostic.get(buf)
-
-  if #diagnostics == 0 then
-    vim.notify("No diagnostics found", vim.log.levels.INFO)
-    return
-  end
-
-  vim.ui.select(
-    {
-      "Line1",
-      "Line2",
-      "Line3",
-    },
-    { prompt = "Choose an option:" },
-    function(choice, idx)
-      if choice then
-        print("You selected: " .. choice .. " at index " .. idx)
-      else
-        print("No option selected.")
-      end
+    if #diagnostic_arr == 0 then
+      vim.notify("No diagnostics found")
+      return
     end
-  )
-end
 
+    local severity_icons = {
+      [vim.diagnostic.severity.ERROR] = Signs.Error,
+      [vim.diagnostic.severity.WARN] = Signs.Warn,
+      [vim.diagnostic.severity.INFO] = Signs.Info,
+      [vim.diagnostic.severity.HINT] = Signs.Hint,
+    }
+    local severity_names = {
+      [vim.diagnostic.severity.ERROR] = "Err ",
+      [vim.diagnostic.severity.WARN]  = "Warn",
+      [vim.diagnostic.severity.INFO]  = "Info",
+      [vim.diagnostic.severity.HINT]  = "Hint",
+    }
+    -- Преобразуем diagnostics в список объектов
+    local items = {}
+    for _, diag in ipairs(diagnostic_arr) do
+      table.insert(items, {
+        text = string.format(" %s [%s] | %d | %s",
+          severity_icons[diag.severity],
+          severity_names[diag.severity],
+          diag.lnum + 1,
+          diag.message
+        ),
+        lnum = diag.lnum,
+        severity = diag.severity,
+      })
+    end
+    -- MiniPick UI select с фильтром по severity
+    MiniPick.ui_select(items, {
+      prompt = "Diagnostics (type to filter):",
+      format_item = function(item)
+        return item.text
+      end,
+    }, function(selected)
+      if selected then
+        vim.api.nvim_win_set_cursor(0, { selected.lnum + 1, 0 })
+        vim.cmd("normal! zz") -- центрируем экран на строке
+      end
+    end)
+  end, {}
+)
 
-vim.api.nvim_create_user_command("DisplayAllDiagnostics", OpenAllDiagnostics, {})
+vim.keymap.set('n', "<leader>fd", ":OpenDiagnostics<CR>", { desc = "LSP open all diagnostics of a buffer" })
 
-
+vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, { desc = 'LSP Code Action' })
