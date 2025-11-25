@@ -8,7 +8,7 @@ vim.diagnostic.config({
 })
 
 -- some diagnostics stuff
-Signs = { Error = "", Warn = "", Info = "", Hint = "" }
+Signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
 
 -- Highlight entire line for errors
 -- Highlight the line number for warnings

@@ -55,6 +55,12 @@ map("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 map('n', '<leader>q', '<Cmd>bd<CR>', { desc = 'Close buffer' })
 map('n', '<leader>Q', '<Cmd>bd!<CR>', { desc = 'Force close buffer' })
 
+map('n', '<A-Left>', '<Cmd>bprevious<CR>', {desc = 'Previous buffer'})
+map('n', '<A-Right>', '<Cmd>bnext<CR>', {desc = 'Next buffer'})
+
+map('n', 'gd', '<Cmd>lua vim.lsp.buf.definition()<CR>', {desc = "Go to definition"})
+map('n', 'gi', '<Cmd>lua vim.lsp.buf.implementation()<CR>', {desc = "Go to implementation"})
+
 for i = 1, 9 do
   map('n', '<A-' .. i .. '>', function()
     -- Switch to the i-th buffer in the buffer list
@@ -64,3 +70,8 @@ for i = 1, 9 do
     end
   end, { desc = 'Go to buffer ' .. i })
 end
+
+map("n", "<leader>tv", "<Cmd>ToggleTerm direction=horizontal size=10<CR>")
+map('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+
+
