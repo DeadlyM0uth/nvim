@@ -1,12 +1,10 @@
 return {
-  { 'nvim-mini/mini.nvim', version = false },
-
-  -- mini files
   {
-
-    'nvim-mini/mini.files',
+    'nvim-mini/mini.nvim',
     version = false,
+
     config = function()
+      -- MINI FILES CONFIG
       require('mini.files').setup({
         mappings = {
           go_in       = '<Right>', -- Changed from 'l' to right arrow
@@ -20,108 +18,75 @@ return {
           preview = true,
           width_focus = 30
         }
-
       })
 
+      vim.keymap.set(
+        "n",
+        "<leader>ee",
+        "<cmd>lua MiniFiles.open()<CR>",
+        { desc = "toggle mini file explorer" }
+      )
 
-      vim.keymap.set("n", "<leader>ee", "<cmd>lua MiniFiles.open()<CR>", { desc = "toggle mini file explorer" })
       vim.keymap.set("n", "<leader>ef", function()
         MiniFiles.open(vim.api.nvim_buf_get_name(0), false)
         MiniFiles.reveal_cwd()
       end, { desc = "toggle mini file explorer" })
-    end
 
-
-  },
-
-
-  {
-    'nvim-mini/mini.tabline',
-    version = false,
-
-    config = function()
+      -- MINI TABLINE
       require("mini.tabline").setup()
-    end
-  },
 
-  {
-    'nvim-mini/mini.comment',
-    version = false,
-
-    config = function()
+      -- MINI COMMENT
       require('mini.comment').setup({
 
         mappings = {
           comment = '',
-          comment_visual = 'cc',
-          comment_line = 'cc',
+          comment_visual = '<C-/>',
+          comment_line = '<C-/>',
         },
-
       })
-    end
-  },
 
-  {
-    'nvim-mini/mini.pairs',
-    version = false,
-    config = function()
+      -- MINI PAIRS
       require('mini.pairs').setup({})
-    end
-  },
 
-  {
-    'nvim-mini/mini.surround',
-    version = false,
-
-    config = function()
+      -- MINI SURROUND
       require("mini.surround").setup({})
-    end
-  },
 
-  {
-    'nvim-mini/mini.pick',
-    version = false,
-
-    config = function()
+      -- MINI PICK
       require('mini.pick').setup({})
 
       -- File operations
-      vim.keymap.set('n', '<leader>ff', "<cmd>lua MiniPick.builtin.files()<CR>", { desc = 'Find files' })
-      vim.keymap.set('n', '<leader>fg', "<cmd>lua MiniPick.builtin.grep_live()<CR>", { desc = 'Grep in files' })
-
+      vim.keymap.set(
+        'n',
+        '<leader>ff',
+        "<cmd>lua MiniPick.builtin.files()<CR>",
+        { desc = 'Find files' }
+      )
+      vim.keymap.set(
+        'n',
+        '<leader>fg',
+        "<cmd>lua MiniPick.builtin.grep_live()<CR>",
+        { desc = 'Grep in files' }
+      )
       -- Buffer operations
-      vim.keymap.set('n', '<leader>fb', "<cmd>lua MiniPick.builtin.buffers()<CR>", { desc = 'Find buffers' })
-    end
+      vim.keymap.set(
+        'n',
+        '<leader>fb',
+        "<cmd>lua MiniPick.builtin.buffers()<CR>",
+        { desc = 'Find buffers' }
+      )
 
-  },
+      -- MINI INDENTSCOPE
+      require("mini.indentscope").setup()
 
-  {
-    'nvim-mini/mini.indentscope',
-    version = false,
+      -- MINI COMPLETION
+      require("mini.completion").setup()
+      require("mini.icons").setup()
+      require("mini.notify").setup()
+      require("mini.splitjoin").setup()
 
-    config = function()
-      require("mini.indentscope").setup({})
-    end
-  },
-
-  {
-    'nvim-mini/mini.completion',
-    version = false,
-    config = function()
-      require("mini.completion").setup({})
-    end
-
-
-  },
-
-  {
-    'nvim-mini/mini.snippets',
-    version = false,
-
-    config = function()
+      -- MINI NIPPETS
       local gen_loader = require('mini.snippets').gen_loader
       local config_path = vim.fn.stdpath("config")
-
 
       local lang_patterns = {
         -- Filetype = { 'pattern1', 'pattern2', ... }
@@ -178,24 +143,39 @@ return {
 
       MiniSnippets.start_lsp_server()
 
-    end
+      -- MINI STARTER
+      local starter = require("mini.starter")
+      starter.setup({
+        header = table.concat({
+          '⠀⠀⠀⠀⠀⠀⠀⠀⠀meow⠀⠀⠀⠀⠀⠀⣠⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀meow⠀⠀⠀⠀⠀',
+          'ow⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣾⠋⠀⠹⣷⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠀⠀⢹⡇ow⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⠀⠀⠀⠀meow⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡇⠀⠀⠀⠸⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀me',
+          '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀meo⢻⡇⠀⠀⠀⠀⣿⣠⣤⣤⣄⠀meow⠀⠀⠀⠀⠀⠀⠀',
+          '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣸⣧⠀⠀⠀⠀⣿⡏⠀⠈⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          'w⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡾⠉⠉⠟⠀⠀⠀⠀⠉⠁⠀⠀⢹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⠀⠀⠀⠀⠀⠀⠀m⢠⣶⣦w⠀⠀⢸⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⣠⣄⠀⠀⠀⠀⠀⢀⣾⠁⢹⣧⠀m⢈⡿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠏⠀⠀⠀⠀⠀⠀meow⠀⠀',
+          '⣿⠛⢷⣤⣤⡴⠶⠾⠃⠀⠀⣿⢀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⣀⣼⠏w⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⢻⡆⣀⡀⠀⠀⠀⠀⣀⣀⠀⣿⡟⠁⠀⠀⠀⠀⠀⢀⣠⣤⠶⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⠸⣿⡿⠟⣿⣄⡾⠟⡛⢓⣿⠋⠀⠀⠀⣀⣤⡶⠞⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀meo',
+          '⠀⠹⣷⣼⣁⣽⣧⣽⠿⠋⢁⣠⣴⠶⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀meow⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⠀⠀⣠⡿⠛⠉⠁⠀⠀⠰⣯⣁⣠⠴⠛⢻⡆meow⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⢀⣾⠋⢀⣄⠀⠀⠀⣀⠀⢿⡷⠦⠴⠶⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⢸⡏⢠⣿⢹⣧⠀⣾⠻⣧⠘⣿w ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀meow⠀⠀⠀⠀m',
+          '⠘⢷⠟⠁⢸⡏⠀⣿⠀⠻⣦⣿⡇⠀⠀⠀⠀⠀⠀⠀meow⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⠀meo⢸⡇⢸⡟⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀',
+          '⠀⠀⠀⠀⠈⠙⠋⠀⠀⠀⠀⠀⠀⠀meow⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀meow⠀⠀⠀⠀⠀meo',
+        }, '\n'),
 
-  },
+        footer = "",
 
-  {
-    'nvim-mini/mini.icons', version = false,
-
-    config = function()
-      require("mini.icons").setup({})
-    end
-  },
-
-  {
-    'nvim-mini/mini.notify', version = false,
-
-    config = function()
-      require("mini.notify").setup({})
-    end
+        items = {
+          starter.sections.recent_files(10, true),
+          starter.sections.builtin_actions(),
+        },
+        starter.gen_hook.adding_bullet("")
+      })
+    end,
   },
 }
-

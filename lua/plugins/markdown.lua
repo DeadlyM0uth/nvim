@@ -8,7 +8,7 @@ return
   ---@type render.md.UserConfig
   opts = {},
 
-  enabled = false,
+  enabled = true,
 
   config = function()
     require("render-markdown").setup({

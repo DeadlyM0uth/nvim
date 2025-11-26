@@ -14,6 +14,9 @@ opt.shiftwidth = 2
 opt.softtabstop = 2
 vim.opt.updatetime = 250
 
+
+
+
 opt.expandtab = true
 opt.smarttab = true
 opt.smartindent = true
@@ -32,3 +35,5 @@ opt.splitbelow = true
 
 vim.cmd [[colorscheme catppuccin-mocha]]
 opt.clipboard = 'unnamedplus'
+
+
