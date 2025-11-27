@@ -33,7 +33,7 @@ opt.backspace = { "start", "eol", "indent" }
 opt.splitright = true
 opt.splitbelow = true
 
-vim.cmd [[colorscheme catppuccin-mocha]]
+vim.cmd [[colorscheme catppuccin-latte]]
 opt.clipboard = 'unnamedplus'
 
 

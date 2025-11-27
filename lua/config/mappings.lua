@@ -8,8 +8,8 @@ vim.gmaplocalleader = " "
 map("v", "<S-Down>", ":m '>+1<CR>gv=gv", { desc = "move lines down in v-mode" })
 map("v", "<S-Up>", ":m '<-2<CR>gv=gv", { desc = "move lines up in v-mode" })
 
-map("v", "J", ":m '>+1<CR>gv=gv", { desc = "move lines down in v-mode" })
-map("v", "K", ":m '<-2<CR>gv=gv", { desc = "move lines up in v-mode" })
+-- map("v", "J", ":m '>+1<CR>gv=gv", { desc = "move lines down in v-mode" })
+-- map("v", "K", ":m '<-2<CR>gv=gv", { desc = "move lines up in v-mode" })
 
 -- map("n", ";", ":", { desc = "CMD enter command mode" })
 
@@ -20,14 +20,13 @@ map({ "n", "v" }, "<leader>y", [["+y]])
 
 map({ "n", "v" }, "<leader>d", [["_d]])
 
-map('n', '<A-Down>', function()
+map({ 'n', "i" }, '<A-Down>', function()
   vim.cmd('normal! yyp')
   vim.cmd('normal! k') -- Move back to original line
 end, { desc = 'Duplicate line below and stay' }
 )
 
 map("n", "<leader>ft", vim.lsp.buf.format, { desc = "format file" })
-
 
 map("n", "<leader>s",
   [[:%s/\<<C-r><C-w>\>/<C-r><C-w>/gI<Left><Left><Left>]],
@@ -43,12 +42,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
---split management
-map("n", "<leader>sv", "<C-w>v", { desc = "Split window vertically" })
--- split window vertically
-map("n", "<leader>sh", "<C-w>s", { desc = "Split window horizox sxally" })
--- split window horizontally
-map("n", "<leader>se", "<C-w>=", { desc = "Make splits equal size" }) -- make split windows equal width & height
 -- close current split window
 map("n", "<leader>sx", "<cmd>close<CR>", { desc = "Close current split" })
 
@@ -71,7 +64,11 @@ for i = 1, 9 do
   end, { desc = 'Go to buffer ' .. i })
 end
 
-map("n", "<leader>tv", "<Cmd>ToggleTerm direction=horizontal size=10<CR>")
+-- In your init.lua
+vim.keymap.set('n', '<A-e>', '$', opts)
+vim.keymap.set('n', '<A-w>', '^', opts)
+
+map("n", "<leader>tt", "<Cmd>ToggleTerm direction=horizontal size=10<CR>")
 map('t', '<Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 
 
