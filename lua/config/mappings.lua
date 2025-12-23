@@ -8,10 +8,8 @@ vim.gmaplocalleader = " "
 map("v", "<S-Down>", ":m '>+1<CR>gv=gv", { desc = "move lines down in v-mode" })
 map("v", "<S-Up>", ":m '<-2<CR>gv=gv", { desc = "move lines up in v-mode" })
 
--- map("v", "J", ":m '>+1<CR>gv=gv", { desc = "move lines down in v-mode" })
--- map("v", "K", ":m '<-2<CR>gv=gv", { desc = "move lines up in v-mode" })
+map({"n", "v"}, "<leader>h", "<CMD>nohlsearch<CR>")
 
--- map("n", ";", ":", { desc = "CMD enter command mode" })
 
 map("v", "<", "<gv", opts)
 map("v", ">", ">gv", opts)

@@ -1,14 +1,14 @@
 vim.diagnostic.config({
-  virtual_text = false,     -- Отключаем виртуальный текст
+  virtual_text = true,     -- Отключаем виртуальный текст
   signs = true,             -- Включаем знаки на полях
   underline = true,         -- Подчеркивание проблемных мест
   update_in_insert = false, -- Не обновлять в режиме insert
   severity_sort = true,     -- Сортировка по серьезности
-  virtual_lines = true,
+  virtual_lines = false,
 })
 
 -- some diagnostics stuff
-Signs = { Error = " ", Warn = " ", Info = " ", Hint = " " }
+Signs = { Error = " ", Warn = " ", Info = " ", Hint = "" }
 
 -- Highlight entire line for errors
 -- Highlight the line number for warnings
